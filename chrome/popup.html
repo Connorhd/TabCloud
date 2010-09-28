@@ -1,0 +1,393 @@
+<html>
+	<head>
+		<script src="./lib/jquery-1.4.2.min.js"></script>
+		<script src="./lib/jquery-ui-1.8.5.custom.min.js"></script>
+		<script src="./lib/jquery.innerfade.js"></script>
+		<script>
+			$(function () {
+				// Protect against XSRF attacks
+				jQuery.ajaxSetup({
+					'beforeSend': function(xhr) {
+						xhr.setRequestHeader('X-XSRF-Protection', 'true');
+					}
+				})
+			
+				var getWindowName = function (name) {
+					var names = JSON.parse(localStorage.tempWindowNames)
+					return names[name];
+				};
+				var setWindowName = function (name, value) {
+					var names = JSON.parse(localStorage.tempWindowNames)
+					names[name] = value;
+					localStorage.tempWindowNames = JSON.stringify(names);
+				};
+				var makeSortable = function () {
+					$(".tabs").sortable({
+						placeholder: 'tabplaceholder',
+						forcePlaceholderSize: true,
+						revert: 100,
+						connectWith: '.tabs',
+						scroll: false,
+						update: function (e, ui) {
+							// Assume both local
+							var tab = $($(ui.item[0]).children()[0]).attr('id');
+							var newWindow = $(e.target).parent().attr('id');
+							var oldWindow = $($(ui.item[0]).children()[0]).attr('windowid');
+							
+							if (tab.substring(6,7) == 'l' && newWindow.substring(3,4) == 'l') {
+								// Local to local
+								
+								// Move tab
+								chrome.tabs.move(parseInt(tab.substring(7),10), {
+									windowId: parseInt(newWindow.substring(4),10),
+									index: $(ui.item[0]).index()
+								});
+								
+								// Update image
+								$($(ui.item[0]).children()[0]).attr('windowid', newWindow);
+							} else if (tab.substring(6,7) == 'l' && newWindow.substring(3,4) == 'r') {
+								// Local to remote
+								
+								// Add to remote
+								// Add to array
+								var data = TCWindows[newWindow.substring(4)];
+								data.tabs.splice($(ui.item[0]).index(),0,{
+									url: $($(ui.item[0]).children()[0]).attr('src').substring(17),
+									title: $($(ui.item[0]).children()[0]).attr('title').substring(17)
+								});
+								data.name = getWindowName(newWindow);
+								// Send new array
+								$.post('https://chrometabcloud.appspot.com/update', {window: JSON.stringify(data), windowId: newWindow.substring(4)});
+								
+								// Remove from local
+								chrome.tabs.remove(parseInt(tab.substring(7),10));
+								
+								// Update image
+								$($(ui.item[0]).children()[0]).removeClass('tabimglocal').attr('id','tabimgr'+$(ui.item[0]).index()).attr('windowid', newWindow);
+								$.each($(ui.item[0]).parent().children(), function (i, e) {
+									$($(e).children()[0]).attr('id','tabimgr'+i);
+								});
+							
+							} else if (tab.substring(6,7) == 'r' && newWindow.substring(3,4) == 'l') {
+								// Remote to local
+								
+								// Add to local
+								chrome.tabs.create({
+									windowId: parseInt(newWindow.substring(4),10),
+									url: $($(ui.item[0]).children()[0]).attr('src').substring(17),
+									index: $(ui.item[0]).index(),
+									selected: false
+								}, function (newTab) {
+									// Update image
+									$($(ui.item[0]).children()[0]).addClass('tabimglocal').attr('id','tabimgl'+newTab.id);
+								});
+								
+								// Remove from remote
+								// Remove from array
+								var data = TCWindows[oldWindow.substring(4)];
+								data.tabs.splice(tab.substring(7),1);
+								data.name = getWindowName(oldWindow);
+								// Send new array
+								$.post('https://chrometabcloud.appspot.com/update', {window: JSON.stringify(data), windowId: oldWindow.substring(4)});
+								
+								// Update image
+								$($(ui.item[0]).children()[0]).attr('windowid', newWindow);
+								
+								// Update remote ids
+								$.each($('#'+oldWindow).find('.tabs').children(), function (i, e) {
+									$($(e).children()[0]).attr('id','tabimgr'+i);
+								});
+							} else if (tab.substring(6,7) == 'r' && newWindow.substring(3,4) == 'r') {
+								// Remote to remote
+								
+								if (oldWindow === newWindow) {
+									// Move within window
+									// TODO
+								} else {
+									// Add to first window
+									// Add to array
+									var data = TCWindows[newWindow.substring(4)];
+									data.tabs.splice($(ui.item[0]).index(),0,{
+										url: $($(ui.item[0]).children()[0]).attr('src').substring(17),
+										title: $($(ui.item[0]).children()[0]).attr('title').substring(17)
+									});
+									data.name = getWindowName(newWindow);
+									// Send new array
+									$.post('https://chrometabcloud.appspot.com/update', {window: JSON.stringify(data), windowId: newWindow.substring(4)});
+
+									// Remove from 2nd
+									// Remove from array
+									var data = TCWindows[oldWindow.substring(4)];
+									data.tabs.splice(tab.substring(7),1);
+									data.name = getWindowName(oldWindow);
+									// Send new array
+									$.post('https://chrometabcloud.appspot.com/update', {window: JSON.stringify(data), windowId: oldWindow.substring(4)});
+									// Update image
+									$($(ui.item[0]).children()[0]).attr('windowid', newWindow);
+									
+									// Update image
+									$($(ui.item[0]).children()[0]).attr('windowid', newWindow);
+									$.each($('#'+oldWindow).find('.tabs').children(), function (i, e) {
+										$($(e).children()[0]).attr('id','tabimgr'+i);
+									});
+									$.each($(ui.item[0]).parent().children(), function (i, e) {
+										$($(e).children()[0]).attr('id','tabimgr'+i);
+									});
+								}
+							}
+							$('.tabslocal').each(function (e) {
+								if ($(this).children().length === 0) {
+									$(this).parent().detach();
+								}
+							});
+						}
+					});
+				};
+				chrome.windows.getAll({populate: true}, function (windows) {
+					windows.forEach(function (curWindow) {
+						if (getWindowName('winl'+curWindow.id) === undefined)
+							setWindowName('winl'+curWindow.id,'Window '+curWindow.id);
+						var winString = '<fieldset class="window" id="winl'+curWindow.id+'"><legend class="windowname">'+getWindowName('winl'+curWindow.id)+'</legend><span class="right"><img class="windowsave" src="images/disk.png" title="Save window" /></span><div class="tabs tabslocal">';
+						curWindow.tabs.forEach(function (curTab) {
+							winString += '<div style="float: left"><img id="tabimgl'+curTab.id+'" windowid="winl'+curWindow.id+'" class="tabimg tabimglocal" src="chrome://favicon/'+curTab.url+'" title="'+curTab.title+'" /></div>';
+						});
+						winString += '</div></fieldset>';
+						$('#current').append(winString);
+					});
+					makeSortable();
+				});
+			
+				$('.tabimg').live('mouseup', function (e) {
+					if (e.button === 1 || (e.button === 0 && e.ctrlKey === true)) {
+						chrome.tabs.create({
+							url: $(this).attr('src').substring(17)
+						});
+					}
+				});
+				
+				// Local options
+				
+				$('.tabimglocal').live('click', function (e) {
+					var tabId = $(this).attr('id').substring(7);
+					chrome.tabs.update(parseInt(tabId,10), {selected: true});
+				});
+				
+				$('.windowname').live('click', function (e) {
+					var windowId = $(this).parent().attr('id');
+					$(this).html('<input type="text" class="windowinput" value="'+getWindowName(windowId)+'" />').removeClass('windowname');
+					$(this).find('input').focus();
+				});
+				
+				$('.windowinput').live('blur', function (e) {
+					var windowId = $(this).parent().parent().attr('id');
+					setWindowName(windowId, $(this).val());
+					$(this).parent().text(getWindowName(windowId)).addClass('windowname');
+					// Remote windows
+					if (windowId.substring(3,4) == 'r') {
+						var data = TCWindows[windowId.substring(4)];
+						data.name = getWindowName(windowId);
+						$.post('https://chrometabcloud.appspot.com/update', {window: JSON.stringify(data), windowId: windowId.substring(4)});
+					}
+				});
+				
+				$('.windowinput').live('keypress', function (e) {
+					if (e.which === 13) {
+						$(this).blur();
+					} else {
+						return true;
+					}
+					
+				})
+				
+				$('.windowsave').live('click', function (e) {
+					var windowId = parseInt($(this).parent().parent().attr('id').substring(4),10);
+					var img = this;
+					$(img).attr('src','images/arrow_refresh.png').removeClass('windowsave');
+					chrome.tabs.getAllInWindow(windowId, function (tabs) {
+						var data = {};
+						data.name = getWindowName('winl'+windowId);
+						data.tabs = [];
+						tabs.forEach(function (tab) {
+							data.tabs.push({
+								url: tab.url,
+								title: tab.title
+							});
+						});
+						$.post('https://chrometabcloud.appspot.com/add', {window: JSON.stringify(data)}, function () { 
+							$(img).attr('src','images/accept.png');
+							updateTabs();
+						});
+					});
+				});
+				
+				
+				$('.windowopen').live('click', function (e) {
+				console.log($(this).parent().parent().attr('id'));
+					var windowId = parseInt($(this).parent().parent().attr('id').substring(4),10);
+					chrome.extension.sendRequest({tabs: TCWindows[windowId].tabs});
+				});
+				
+				$('.windowdelete').live('click', function (e) {
+					if (localStorage.deleteconfirm === 'yes') {
+						$(this).parent().html('<span>Confirm: <img style="vertical-align: middle" class="windowreallydelete" src="images/delete.png" /></span>');
+					} else {
+						var windowId = parseInt($(this).parent().parent().attr('id').substring(4),10);
+						$(this).attr('src','images/arrow_refresh.png');
+						var self = this;
+						$.post('https://chrometabcloud.appspot.com/remove', {window: windowId}, function () {
+							updateTabs();
+						});
+					}
+				});
+				
+				$('.windowreallydelete').live('click', function (e) {
+					var windowId = parseInt($(this).parent().parent().parent().attr('id').substring(4),10);
+					$(this).attr('src','images/arrow_refresh.png');
+					var self = this;
+					$.post('https://chrometabcloud.appspot.com/remove', {window: windowId}, function () {
+						updateTabs();
+					});
+				});
+				
+				var setInfo = function (info) {
+					$('#saved').html('<div class="info">'+info+'</div>');
+				}
+				
+				var TCWindows = [];
+
+				var updateTabs = function () {
+					setInfo('Loading...');
+					$.get('https://chrometabcloud.appspot.com/tabcloud', function (data) {
+						if (data.status !== undefined) {
+							if (data.status == 'loggedin') {
+								if (data.windows.length == 0) {
+									setInfo('You haven\'t saved any windows yet!');	
+								} else {
+									$('#saved').html("");
+									TCWindows = data.windows;
+									var i = 0;
+									data.windows.forEach(function (curWindow) {
+										setWindowName('winr'+i,curWindow.name);
+										var winString = '<fieldset class="window" id="winr'+i+'"><legend class="windowname">'+curWindow.name+'</legend><span class="right"><img class="windowdelete" src="images/delete.png" title="Delete window"><img class="windowopen" src="images/add.png" title="Open window"></span><div class="tabs">';
+										var ti = 0;
+										curWindow.tabs.forEach(function (curTab) {
+											winString += '<div style="float: left"><img id="tabimgr'+(ti++)+'" windowid="winr'+i+'" class="tabimg" src="chrome://favicon/'+curTab.url+'" title="'+curTab.title+'" /></div>';
+										});
+										winString += '</div></fieldset>';
+										$('#saved').append(winString);
+										i++;
+									});
+									makeSortable();
+								}
+							} else {
+								setInfo('TabCloud requires you login to load your saved windows<br /><a target="_blank" href="https://chrometabcloud.appspot.com/login">Click here to login</a>');
+							}
+						} else {
+							setInfo('Server error, try again later.');
+						}
+					}, 'json');
+				}
+				setTimeout(updateTabs, 0);
+				
+				// Extra links
+				
+				$('#optionslink').click(function (e) {
+					chrome.tabs.create({
+						url: chrome.extension.getURL('options.html')
+					});
+				});				
+				
+				$('#logoutlink').click(function (e) {
+					chrome.tabs.create({
+						url: 'https://chrometabcloud.appspot.com/logout'
+					});
+				});		
+				
+				// Tips
+				
+				$('#tips').innerfade({
+					speed: 'slow',
+					timeout: 4000,
+					type: 'random',
+					containerheight: '1em'
+				});
+			});
+		</script>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			.tabplaceholder {
+				float: left;
+				width: 20px;
+				background-color: #ccc;
+				border-radius: 2px;
+			}
+			body {
+				width: 300px;
+				font-size: 0.9em;
+				font-family: sans-serif;
+			}
+			.window {
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				margin: 5px;
+				padding: 5px;
+			}
+			.window legend {
+				padding: 0 2px;
+				background-color: white;
+			}
+
+			.tabs img {
+				margin: 2px;
+			}
+			.tabs {
+				padding: 0;
+				height: 20px;
+			}
+			#current {
+				border-bottom: 1px solid black;
+			}
+			.info {
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				margin: 5px;
+				text-align: center;
+				padding: 10px;
+			}
+			.right {
+				position: absolute;
+				right: 15px;
+				margin-top: -22px;
+				background-color: white;
+				padding: 2px;
+			}
+			.decryptpass {
+				width: 150px !important;
+			}
+			
+			#tips span {
+				width: 100%;
+			}
+			#tips {
+				margin-bottom: 3px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="current"></div>
+		<div id="saved"></div>
+		<div class="info" style="font-size: 0.7em;">
+			<div id="tips">
+				<span>Tip: Click on a window's name to rename it.</span>
+				<span>Tip: Middle click on an icon to open just that tab.</span>
+				<span>Tip: Drag an icon to re-arrange tabs.</span>
+				<span>Tip: Hover on an icon to view the title for that tab.</span>
+				<span>Tip: Click on an icon to jump to that tab.</span>
+			</div>
+			<a href="" id="optionslink">Options</a> - <a href="" id="logoutlink">Logout</a>
+		</div>
+	</body>
+</html>

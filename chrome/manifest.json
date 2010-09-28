@@ -1,0 +1,26 @@
+{
+	"name": "TabCloud",
+	"version": "1.1",
+	
+	"icons": {
+		"16": "images/icon16.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
+	},
+	
+	"description": "Save and restore window sessions over time and across multiple computers.",
+	"permissions": [
+		"tabs",
+		"chrome://favicon/",
+		"https://chrometabcloud.appspot.com/*"
+	],
+	
+	"background_page": "background.html",
+	
+	"options_page": "options.html",
+	
+	"browser_action": {
+		"default_icon": "images/menu.png",
+		"default_popup": "popup.html"
+	}
+}
