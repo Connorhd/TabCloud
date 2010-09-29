@@ -108,7 +108,7 @@
 									// Add to array
 									var data = TCWindows[newWindow.substring(4)];
 									data.tabs.splice($(ui.item[0]).index(),0,{
-										url: $($(ui.item[0]).children()[0]).attr('src').substring(17),
+										url: $($(ui.item[0]).children()[0]).attr('url'),
 										title: $($(ui.item[0]).children()[0]).attr('title').substring(17)
 									});
 									data.name = getWindowName(newWindow);
@@ -149,7 +149,9 @@
 							setWindowName('winl'+curWindow.id,'Window '+curWindow.id);
 						var winString = '<fieldset class="window" id="winl'+curWindow.id+'"><legend class="windowname">'+getWindowName('winl'+curWindow.id)+'</legend><span class="right"><img class="windowsave" src="images/disk.png" title="Save window" /></span><div class="tabs tabslocal">';
 						curWindow.tabs.forEach(function (curTab) {
-							winString += '<div style="float: left"><img id="tabimgl'+curTab.id+'" windowid="winl'+curWindow.id+'" class="tabimg tabimglocal" src="chrome://favicon/'+curTab.url+'" title="'+curTab.title+'" /></div>';
+							var favicon = (curTab.favIconUrl != '' && curTab.favIconUrl !== undefined) ? curTab.favIconUrl : 'chrome://favicon/'+curTab.url;
+							console.log(favicon);
+							winString += '<div style="float: left"><img id="tabimgl'+curTab.id+'" windowid="winl'+curWindow.id+'" class="tabimg tabimglocal" url="'+curTab.url+'" src="'+favicon+'" title="'+curTab.title+'" /></div>';
 						});
 						winString += '</div></fieldset>';
 						$('#current').append(winString);
@@ -160,7 +162,7 @@
 				$('.tabimg').live('mouseup', function (e) {
 					if (e.button === 1 || (e.button === 0 && e.ctrlKey === true)) {
 						chrome.tabs.create({
-							url: $(this).attr('src').substring(17)
+							url: $(this).attr('url')
 						});
 					}
 				});
@@ -210,7 +212,8 @@
 						tabs.forEach(function (tab) {
 							data.tabs.push({
 								url: tab.url,
-								title: tab.title
+								title: tab.title,
+								favicon: (tab.favIconUrl != '' && tab.favIconUrl !== undefined) ? tab.favIconUrl : ''
 							});
 						});
 						$.post('https://chrometabcloud.appspot.com/add', {window: JSON.stringify(data)}, function () { 
@@ -271,7 +274,8 @@
 										var winString = '<fieldset class="window" id="winr'+i+'"><legend class="windowname">'+curWindow.name+'</legend><span class="right"><img class="windowdelete" src="images/delete.png" title="Delete window"><img class="windowopen" src="images/add.png" title="Open window"></span><div class="tabs">';
 										var ti = 0;
 										curWindow.tabs.forEach(function (curTab) {
-											winString += '<div style="float: left"><img id="tabimgr'+(ti++)+'" windowid="winr'+i+'" class="tabimg" src="chrome://favicon/'+curTab.url+'" title="'+curTab.title+'" /></div>';
+											var favicon = (curTab.favicon != '' && curTab.favicon !== undefined) ? curTab.favicon : 'chrome://favicon/'+curTab.url;
+											winString += '<div style="float: left"><img id="tabimgr'+(ti++)+'" windowid="winr'+i+'" class="tabimg" src="'+favicon+'" url="'+curTab.url+'" title="'+curTab.title+'" /></div>';
 										});
 										winString += '</div></fieldset>';
 										$('#saved').append(winString);
