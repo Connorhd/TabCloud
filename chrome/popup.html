@@ -52,8 +52,9 @@
 								// Add to array
 								var data = TCWindows[newWindow.substring(4)];
 								data.tabs.splice($(ui.item[0]).index(),0,{
-									url: $($(ui.item[0]).children()[0]).attr('src').substring(17),
-									title: $($(ui.item[0]).children()[0]).attr('title').substring(17)
+									url: $($(ui.item[0]).children()[0]).attr('url'),
+									title: $($(ui.item[0]).children()[0]).attr('title'),
+									favicon: ($($(ui.item[0]).children()[0]).attr('src') != 'chrome://favicon/'+$($(ui.item[0]).children()[0]).attr('url')) ? $($(ui.item[0]).children()[0]).attr('src') : ''
 								});
 								data.name = getWindowName(newWindow);
 								// Send new array
@@ -74,7 +75,7 @@
 								// Add to local
 								chrome.tabs.create({
 									windowId: parseInt(newWindow.substring(4),10),
-									url: $($(ui.item[0]).children()[0]).attr('src').substring(17),
+									url: $($(ui.item[0]).children()[0]).attr('url'),
 									index: $(ui.item[0]).index(),
 									selected: false
 								}, function (newTab) {
@@ -109,7 +110,8 @@
 									var data = TCWindows[newWindow.substring(4)];
 									data.tabs.splice($(ui.item[0]).index(),0,{
 										url: $($(ui.item[0]).children()[0]).attr('url'),
-										title: $($(ui.item[0]).children()[0]).attr('title').substring(17)
+										title: $($(ui.item[0]).children()[0]).attr('title'),
+										favicon: ($($(ui.item[0]).children()[0]).attr('src') != 'chrome://favicon/'+$($(ui.item[0]).children()[0]).attr('url')) ? $($(ui.item[0]).children()[0]).attr('src') : ''
 									});
 									data.name = getWindowName(newWindow);
 									// Send new array
@@ -151,7 +153,7 @@
 						curWindow.tabs.forEach(function (curTab) {
 							var favicon = (curTab.favIconUrl != '' && curTab.favIconUrl !== undefined) ? curTab.favIconUrl : 'chrome://favicon/'+curTab.url;
 							console.log(favicon);
-							winString += '<div style="float: left"><img id="tabimgl'+curTab.id+'" windowid="winl'+curWindow.id+'" class="tabimg tabimglocal" url="'+curTab.url+'" src="'+favicon+'" title="'+curTab.title+'" /></div>';
+							winString += '<div style="float: left"><img id="tabimgl'+curTab.id+'" windowid="winl'+curWindow.id+'" class="tabimg tabimglocal" url="'+curTab.url+'" src="'+favicon+'" title="'+curTab.title.replace(/\"/g,"'")+'" /></div>';
 						});
 						winString += '</div></fieldset>';
 						$('#current').append(winString);
@@ -275,7 +277,7 @@
 										var ti = 0;
 										curWindow.tabs.forEach(function (curTab) {
 											var favicon = (curTab.favicon != '' && curTab.favicon !== undefined) ? curTab.favicon : 'chrome://favicon/'+curTab.url;
-											winString += '<div style="float: left"><img id="tabimgr'+(ti++)+'" windowid="winr'+i+'" class="tabimg" src="'+favicon+'" url="'+curTab.url+'" title="'+curTab.title+'" /></div>';
+											winString += '<div style="float: left"><img id="tabimgr'+(ti++)+'" windowid="winr'+i+'" class="tabimg" src="'+favicon+'" url="'+curTab.url+'" title="'+curTab.title.replace(/\"/g,"'")+'" /></div>';
 										});
 										winString += '</div></fieldset>';
 										$('#saved').append(winString);
