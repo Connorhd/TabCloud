@@ -35,6 +35,9 @@
 				border-radius: 5px;
 				margin: 5px;
 				padding: 8px;
+				overflow: hidden;
+				word-wrap: break-word;
+				word-break: break-all;
 			}
 			.window legend {
 				padding: 0 2px;
@@ -89,10 +92,13 @@
 			$.each(windows, function (i, curWindow) {
 				output += '<fieldset class="window"><legend>'+curWindow.name+'</legend>';
 				$.each(curWindow.tabs, function (i, curTab) {
-					output += '<p><a href="'+curTab.url+'"><img src="'+((curTab.favicon != undefined) ? curTab.favicon : 'images/page_white.png')+'" title="'+curTab.title+'"></a> <a href="'+curTab.url+'">'+curTab.title+'</a></p>';
+					output += '<p><a href="'+curTab.url+'"><img src="'+((curTab.favicon != undefined && curTab.favicon != '') ? curTab.favicon : 'images/page_white.png')+'" title="'+curTab.title+'" style="height: 16px; width: 16px"></a> <a href="'+curTab.url+'">'+curTab.title+'</a></p>';
 				});
 				output += '</fieldset>';
 			});
+			if (output == '') {
+				output += 'No saved tabs, do you have the <a href="https://chrome.google.com/extensions/detail/npecfdijgoblfcgagoijgmgejmcpnhof">Chrome extension</a>?';
+			}
 			$('#windows').html(output);
 		};	
 		showTabs(<%= "["+windowString+"]" %>)

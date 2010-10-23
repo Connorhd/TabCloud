@@ -10,7 +10,7 @@ public class TabCloud extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://chrometabcloud.appspot.com/tabs.jsp")));
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://chrometabcloud.appspot.com/tabs.jsp")));
 		this.finish();
     }
 }
