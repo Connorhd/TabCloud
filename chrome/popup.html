@@ -148,7 +148,7 @@
 				chrome.windows.getAll({populate: true}, function (windows) {
 					windows.forEach(function (curWindow) {
 						if (getWindowName('winl'+curWindow.id) === undefined)
-							setWindowName('winl'+curWindow.id,'Window '+curWindow.id);
+							setWindowName('winl'+curWindow.id,'Click to name');
 						var winString = '<fieldset class="window" id="winl'+curWindow.id+'"><legend class="windowname">'+getWindowName('winl'+curWindow.id)+'</legend><span class="right"><img class="windowsave" src="images/disk.png" title="Save window" /></span><div class="tabs tabslocal">';
 						curWindow.tabs.forEach(function (curTab) {
 							var favicon = (curTab.favIconUrl != '' && curTab.favIconUrl !== undefined) ? curTab.favIconUrl : 'chrome://favicon/'+curTab.url;
@@ -209,7 +209,13 @@
 					$(img).attr('src','images/arrow_refresh.png').removeClass('windowsave');
 					chrome.tabs.getAllInWindow(windowId, function (tabs) {
 						var data = {};
-						data.name = getWindowName('winl'+windowId);
+						if (getWindowName('winl'+windowId) == 'Click to name') {
+							var date = new Date();
+							var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+							data.name = months[date.getMonth()]+' '+date.getDate()+', '+date.getFullYear()+' - '+date.toLocaleTimeString();
+						} else {
+							data.name = getWindowName('winl'+windowId);
+						}
 						data.tabs = [];
 						tabs.forEach(function (tab) {
 							data.tabs.push({
