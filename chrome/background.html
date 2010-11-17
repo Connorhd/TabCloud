@@ -18,11 +18,15 @@
 							chrome.tabs.remove(tabs[0].id);
 						});
 						request.tabs.forEach(function (tab) {
-							chrome.tabs.create({
+							curTab = {
 								windowId: window.id,
 								url: tab.url,
 								selected: false
-							});
+							};
+							if (localStorage.supportPinned == 1 && tab.pinned) {
+								curTab.pinned = true;
+							}
+							chrome.tabs.create(curTab);
 						});
 					});
 				} else if (localStorage.openin === 'tab') {
