@@ -43,10 +43,10 @@ public class AddServlet extends HttpServlet {
 					pm.close();
 				}
 			}
-            resp.setContentType("text/plain");
+            resp.setContentType("text/plain; charset=utf-8");
             resp.getWriter().println("{\"status\": \"loggedin\"}");
         } else {
-        	resp.setContentType("text/json");
+        	resp.setContentType("text/json; charset=utf-8");
             resp.getWriter().println("{\"status\": \"loggedout\"}");
         }
 	}

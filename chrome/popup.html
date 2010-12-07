@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 		<script src="./lib/jquery-1.4.2.min.js"></script>
 		<script src="./lib/jquery-ui-1.8.5.custom.min.js"></script>
 		<script src="./lib/jquery.innerfade.js"></script>
@@ -17,6 +18,9 @@
 					return names[name];
 				};
 				var setWindowName = function (name, value) {
+					if (value.length == 0) {
+						value = 'Window';
+					}
 					var names = JSON.parse(localStorage.tempWindowNames)
 					names[name] = value;
 					localStorage.tempWindowNames = JSON.stringify(names);
@@ -354,6 +358,9 @@
 				width: 20px;
 				background-color: #ccc;
 				border-radius: 2px;
+			}
+			#trash .tabplaceholder {
+				opacity: 0.6;
 			}
 			body {
 				width: 300px;

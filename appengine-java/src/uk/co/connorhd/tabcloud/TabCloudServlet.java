@@ -45,10 +45,10 @@ public class TabCloudServlet extends HttpServlet {
 			if (windowString != "")
 				windowString = windowString.substring(0, windowString.length()-1);
 			pm.close();
-            resp.setContentType("text/plain");
+            resp.setContentType("text/plain; charset=utf-8");
             resp.getWriter().println("{\"status\": \"loggedin\", \"windows\": ["+windowString+"]}");
         } else {
-        	resp.setContentType("text/json");
+        	resp.setContentType("text/json; charset=utf-8");
             resp.getWriter().println("{\"status\": \"loggedout\"}");
         }
 	}
