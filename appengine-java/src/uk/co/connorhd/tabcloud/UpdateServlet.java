@@ -26,7 +26,7 @@ public class UpdateServlet extends HttpServlet {
 			try {
 				// Get user
 				Key k = KeyFactory.createKey(TCUser.class.getSimpleName(), user.getEmail());
-				tcUser = pm.getObjectById(TCUser.class, k);
+				tcUser = (TCUser) pm.getObjectById(TCUser.class, k);
 				tcUser.updateWindow(Integer.parseInt(req.getParameter("windowId")), req.getParameter("window"));
 				try {
 					pm.makePersistent(tcUser);
@@ -36,7 +36,7 @@ public class UpdateServlet extends HttpServlet {
 			} catch (Exception e) {
 				pm.close();
 			}
-            resp.setContentType("text/plain; charset=utf-8");
+            resp.setContentType("text/json; charset=utf-8");
             resp.getWriter().println("{\"status\": \"loggedin\"}");
         } else {
         	resp.setContentType("text/json; charset=utf-8");

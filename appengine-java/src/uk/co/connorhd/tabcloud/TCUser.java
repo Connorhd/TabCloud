@@ -44,4 +44,8 @@ public class TCUser {
     public void removeWindow(int index) {
     	this.window.remove(index);
     }
+    
+    public void moveWindow(int oldIndex, int newIndex) {
+    	this.window.add(newIndex, this.window.remove(oldIndex));
+    }
 }

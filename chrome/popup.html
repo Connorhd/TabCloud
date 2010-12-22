@@ -164,6 +164,15 @@
 							}
 						}
 					});
+					$("#saved").sortable({
+						revert: 100,
+						axis: 'y',
+						update: function (e, ui) {
+							$.post('https://chrometabcloud.appspot.com/move', { oldIndex: parseInt(ui.item[0].id.substring(4),10), newIndex: $('#saved > fieldset').index($(ui.item[0]))}, function () {
+								updateTabs();
+							});
+						}
+					});
 				};
 				chrome.windows.getAll({populate: true}, function (windows) {
 					windows.forEach(function (curWindow) {
@@ -195,8 +204,10 @@
 				// Local options
 				
 				$('.tabimglocal').live('click', function (e) {
-					var tabId = $(this).attr('id').substring(7);
-					chrome.tabs.update(parseInt(tabId,10), {selected: true});
+					if (e.button === 0 && e.ctrlKey === false) {
+						var tabId = $(this).attr('id').substring(7);
+						chrome.tabs.update(parseInt(tabId,10), {selected: true});
+					}
 				});
 				
 				$('.windowname').live('click', function (e) {
@@ -372,6 +383,7 @@
 				border-radius: 5px;
 				margin: 5px;
 				padding: 5px;
+				background-color: white;
 			}
 			.window legend {
 				padding: 0 2px;
@@ -427,6 +439,7 @@
 				<span>Hover on an icon to view the title for that tab.</span>
 				<span>Click on an icon to jump to that tab.</span>
 				<span>Drag a tab to the trashcan icon to remove it.</span>
+				<span>Dragging saved windows lets you reorder them.</span>
 			</div>
 			<a href="" id="optionslink">Options / Help</a> - <a href="" id="logoutlink">Logout</a>
 		</div>
