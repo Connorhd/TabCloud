@@ -167,6 +167,7 @@
 					$("#saved").sortable({
 						revert: 100,
 						axis: 'y',
+						distance: 5,
 						update: function (e, ui) {
 							$.post('https://chrometabcloud.appspot.com/move', { oldIndex: parseInt(ui.item[0].id.substring(4),10), newIndex: $('#saved > fieldset').index($(ui.item[0]))}, function () {
 								updateTabs();
@@ -178,7 +179,7 @@
 					windows.forEach(function (curWindow) {
 						if (getWindowName('winl'+curWindow.id) === undefined)
 							setWindowName('winl'+curWindow.id,'Click to name');
-						var winString = '<fieldset class="window" id="winl'+curWindow.id+'"><legend class="windowname">'+getWindowName('winl'+curWindow.id)+'</legend><span class="right"><img class="windowsave" src="images/disk.png" title="Save window" /></span><div class="tabs tabslocal">';
+						var winString = '<fieldset class="window" id="winl'+curWindow.id+'"><legend class="windowname">'+getWindowName('winl'+curWindow.id)+'</legend><span class="right"><img class="windowclose" src="images/delete.png" title="Close window"><img class="windowsave" src="images/disk.png" title="Save window" /></span><div class="tabs tabslocal">';
 						curWindow.tabs.forEach(function (curTab) {
 							if (curTab.pinned !== undefined) {
 								localStorage.supportPinned = 1;
@@ -261,6 +262,7 @@
 						});
 						$.post('https://chrometabcloud.appspot.com/add', {window: JSON.stringify(data)}, function () { 
 							$(img).attr('src','images/accept.png');
+							$(img).attr('title','Window saved');
 							updateTabs();
 						});
 					});
@@ -274,7 +276,7 @@
 				
 				$('.windowdelete').live('click', function (e) {
 					if (localStorage.deleteconfirm === 'yes') {
-						$(this).parent().html('<span>Confirm: <img style="vertical-align: middle" class="windowreallydelete" src="images/delete.png" /></span>');
+						$(this).parent().html('<span class="confirm">Confirm: <img class="windowreallydelete" title="Delete window" src="images/delete.png" /></span>');
 					} else {
 						var windowId = parseInt($(this).parent().parent().attr('id').substring(4),10);
 						$(this).attr('src','images/arrow_refresh.png');
@@ -292,6 +294,22 @@
 					$.post('https://chrometabcloud.appspot.com/remove', {window: windowId}, function () {
 						updateTabs();
 					});
+				});
+				
+				$('.windowclose').live('click', function (e) {
+					if (localStorage.deleteconfirm === 'yes') {
+						$(this).parent().html('<span class="confirm">Confirm: <img class="windowreallyclose" title="Close window" src="images/delete.png" /></span>');
+					} else {
+						var windowId = parseInt($(this).parent().parent().attr('id').substring(4),10);
+						chrome.windows.remove(windowId);
+						$(this).parent().parent().remove()
+					}
+				});
+				
+				$('.windowreallyclose').live('click', function (e) {
+					var windowId = parseInt($(this).parent().parent().parent().attr('id').substring(4),10);
+					chrome.windows.remove(windowId);
+					$(this).parent().parent().parent().remove()
 				});
 				
 				var setInfo = function (info) {
@@ -416,6 +434,9 @@
 				background-color: white;
 				padding: 2px;
 			}
+			.right img {
+				padding: 1px;
+			}
 			.decryptpass {
 				width: 150px !important;
 			}
@@ -425,6 +446,17 @@
 			}
 			#tips {
 				margin-bottom: 3px;
+			}
+			.confirm {
+				display: block;
+				margin-top: -3px;
+				color: white;
+				background-color: #e9594d;
+				border-radius: 5px;
+				padding: 2px;
+			}
+			.confirm img {
+				vertical-align: middle;
 			}
 		</style>
 	</head>
