@@ -8,7 +8,7 @@
   -moz-image-region: rect( 0px 40px 16px 24px);
 }
 #tabcloudpanel #scroll {
-	height: 550px;
+	max-height: 500px;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
