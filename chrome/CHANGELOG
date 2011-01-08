@@ -1,0 +1,11 @@
+Changelog:
+1.9:   - Added a better scrollbar to deal with larger lists of sessions
+1.8:   - Added close window button to currently open windows.
+1.7:   - Reorder saved sessions by dragging
+1.6:   - Fixed UTF-8 Issues (no more ?????? characters)
+        - You can no longer give windows an empty name
+1.5:  - Middle (or ctrl) clicking tabs won't close the tabcloud popup immediately anymore
+       - Pinned tabs are support from Chrome 9
+       - Added a trashcan icon to allow easy deletion of tabs
+       - Added a help section to the options pages which displays all tips
+1.4:  - Automatically name windows if the user doesn't give a name using the current date.

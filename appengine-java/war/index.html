@@ -1,12 +1,97 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>TabCloud</title>
-    <link rel="icon" type="image/png" href="images/icon16.png">
-    <meta name="google-site-verification" content="7iresPSQdJ8nFAqrn58TCKT01RW1THbdWx-OFTbfvOs" />
-  </head>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>TabCloud</title>
+		<link rel="icon" type="image/png" href="images/icon16.png">
+		<meta name="google-site-verification" content="7iresPSQdJ8nFAqrn58TCKT01RW1THbdWx-OFTbfvOs" />
+		<style>
+			body, html {
+				margin: 0; padding: 0;
+			}
+			#wrapper {
+				margin: 0 auto;
+				width: 800px;
+				font-family: sans-serif;
+			}
+			.outerbutton {
+				float: left;
+				padding: 20px 15px;
+			}
+			.innerbutton {
+				display: block;
+				text-decoration: none;
+				padding-top: 40px;
+				font-weight: bold;
+				width: 156px;
+				height: 116px;
+				text-align: center;
+				border-radius: 10px;
+				-moz-border-radius: 10px;
+				font-size: 1.8em;
+			}
+			.innerbutton:link, .innerbutton:visited {
+				background-color: #eee;
+				border: 2px solid #ccc;
+				color: #777;
+			}
+			.innerbutton:hover, .innerbutton:active {
+				background-color: #eee;
+				border: 2px solid #aaa;
+				color: #333;
+			}
+			#share {
+				padding: 5px 0;
+				float: right;
+				font-size: 1.6em;
+			}
+			
+			#share span {
+				vertical-align: top;
+			}
+		</style>
+		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script><script type="text/javascript">stLight.options({publisher:'8ff009a3-9a4e-4d53-9013-cddd9a6882f1'});</script>
+	</head>
 
-  <body>
-  	<a href="https://chrome.google.com/extensions/detail/npecfdijgoblfcgagoijgmgejmcpnhof"><img src="images/tabcloud.png" alt="TabCloud" style="margin: 40px auto; display: block" /></a>
-  </body>
+	<body>
+		<div id="wrapper">
+			<div id="share">Share this >> <span class="st_twitter_large" displayText="Tweet"></span><span class="st_facebook_large" displayText="Facebook"></span><span class="st_ybuzz_large" displayText="Yahoo! Buzz"></span><span class="st_gbuzz_large" displayText="Google Buzz"></span><span class="st_email_large" displayText="Email"></span><span class="st_sharethis_large" displayText="ShareThis"></span></div>
+			<img style="clear: both; float: left; display: block; padding-right: 30px;" src="images/tabcloud200.png" alt="TabCloud" />
+			<div class="outerbutton">
+				<a href="https://chrome.google.com/extensions/detail/npecfdijgoblfcgagoijgmgejmcpnhof" class="innerbutton">
+					Chrome Extension
+				</a> 
+			</div>
+			<div class="outerbutton">
+				<a href="https://addons.mozilla.org/en-US/firefox/addon/268255/" class="innerbutton">
+					Firefox Extension <span style="font-size: 0.5em">(Beta)</span>
+				</a> 
+			</div>
+			<div class="outerbutton">
+				<a href="http://www.androidzoom.com/android_applications/tools/tabcloud_miyj.html" class="innerbutton">
+					Android App
+				</a> 
+			</div>
+			<div style="clear: both; float: left; width: 50%">
+				<p>TabCloud is a browser tab and session manager which allows you save groups of open tabs to access later or on another device.</p>
+				<span>Features:</span>
+					<ul style="margin: 0">
+						<li>Name and save any open window.</li>
+						<li>Uses favicons to easily recognise websites.</li>
+						<li>Access your saved tabs anywhere with Android (iPhone support coming soon).</li>
+						<li>Quickly reorganise your tabs by dragging and dropping (Currently Chrome only).</li>
+						<li>Securely hosted by Google, login with your Google Account.</li>
+					</ul>
+			</div>
+			<div style="float: right; width: 380px"><img src="images/screenshot-browser.png" /></div>
+			<div style="clear: both">&nbsp;</div>
+	  		<script type="text/javascript">
+				var idcomments_acct = '60728889357dc8f5b156ca55da468be0';
+				var idcomments_post_id;
+				var idcomments_post_url;
+			</script>
+			<span id="IDCommentsPostTitle" style="display:none"></span>
+			<script type="text/javascript" src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+		</div>
+	</body>
 </html>

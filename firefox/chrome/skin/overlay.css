@@ -1,0 +1,72 @@
+#tabcloud-toolbar-button
+{
+  list-style-image: url("chrome://tabcloud/skin/toolbar-button.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+}
+[iconsize="small"] #tabcloud-toolbar-button
+{
+  -moz-image-region: rect( 0px 40px 16px 24px);
+}
+#tabcloudpanel #scroll {
+	height: 550px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+#tabcloudpanel * {
+	margin: 0;
+	padding: 0;
+}
+#tabcloudpanel {
+	font-family: sans-serif;
+	font-size: 1.2em;
+}
+#tabcloudpanel .window {
+	border: 1px solid #ccc;
+	-moz-border-radius: 5px;
+	margin: 5px;
+	padding: 5px;
+}
+#tabcloudpanel .window legend {
+	padding: 0 2px;
+	background-color: white;
+}
+#tabcloudpanel .tabs img {
+	margin: 2px;
+	width: 16px;
+	height: 16px;
+}
+#tabcloudpanel .tabs deck {
+	width: 20px;
+	height: 20px;
+}
+#tabcloudpanel #current {
+	border-bottom: 1px solid black;
+}
+#tabcloudpanel .info {
+	border: 1px solid #ccc;
+	-moz-border-radius: 5px;
+	margin: 5px;
+	text-align: center;
+	padding: 10px;
+}
+#tabcloudpanel .right {
+	float: right;
+	margin-top: -22px;
+	background-color: white;
+	padding: 2px;
+	cursor: pointer;
+}
+#tabcloudpanel .decryptpass {
+	width: 150px !important;
+}
+
+#tabcloudpanel #tips span {
+	width: 100%;
+}
+#tabcloudpanel #tips {
+	margin-bottom: 3px;
+}
+#tabcloudpanel a {
+	text-decoration: underline;
+	color: #0000ee;
+}

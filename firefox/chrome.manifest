@@ -1,0 +1,5 @@
+content   tabcloud                 chrome/content/
+skin      tabcloud   classic/1.0   chrome/skin/
+
+overlay   chrome://browser/content/browser.xul   chrome://tabcloud/content/ff-overlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://tabcloud/skin/overlay.css
