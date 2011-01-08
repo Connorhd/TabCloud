@@ -86,9 +86,9 @@ var tabcloud = {
 							document.getElementById('saved').appendChild(domInfo);
 						} else {
 							tabcloud.hideSaved();
-							var windowId = -1;
+							var windowIdCounter = 0;
 							data.windows.forEach(function (win) {
-								windowId++;
+								var windowId = windowIdCounter++;
 								// Create window box
 								var domWindow = document.createElementNS(xhtmlNS, 'fieldset');
 								domWindow.className = 'window';
