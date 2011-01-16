@@ -33,7 +33,7 @@ public class TCUser {
     }
     
     public void addWindow(String str) {
-    	this.window.add(new Text(str));
+    	this.window.add(0, new Text(str));
     }
     
     public void updateWindow(int index, String str) {

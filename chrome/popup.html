@@ -194,7 +194,7 @@
 						$('#current').append(winString);
 					});
 					makeSortable();
-					scroll.update()
+					updateScroll();
 				});
 			
 				$('.tabimg').live('mouseup', function (e) {
@@ -318,7 +318,7 @@
 				
 				var setInfo = function (info) {
 					$('#saved').html('<div class="info">'+info+'</div>');
-					scroll.update()
+					updateScroll();
 				}
 				
 				var TCWindows = [];
@@ -347,7 +347,7 @@
 										i++;
 									});
 									makeSortable();
-									scroll.update()
+									updateScroll();
 								}
 							} else {
 								setInfo('TabCloud requires you login to load your saved windows<br /><a target="_blank" href="https://chrometabcloud.appspot.com/login">Click here to login</a>');
@@ -386,6 +386,11 @@
 				scroll.tinyscrollbar({
 					axis: 'y'
 				});
+				var updateScroll = function () {
+					$('.viewport').height(Math.min($('.overview').height(), 500));
+					scroll.update();
+				}
+				updateScroll();
 			});
 		</script>
 		<style>
@@ -471,7 +476,7 @@
 			}
 			
 			#scrollbar { width: 310px; clear: both; }
-			#scrollbar .viewport { width: 300px; overflow: hidden; position: relative; height: 500px; }
+			#scrollbar .viewport { width: 300px; overflow: hidden; position: relative; height: 0; }
 			#scrollbar .overview { width: 300px; list-style: none; position: absolute; left: 0; top: 0; }
 			#scrollbar .thumb .end,
 			#scrollbar .thumb { background: transparent url(../images/bg-scrollbar.png) no-repeat; }
