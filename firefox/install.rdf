@@ -6,7 +6,7 @@
     <em:name>TabCloud</em:name>
 	<em:iconURL>chrome://tabcloud/content/icon.png</em:iconURL>
 	<em:icon64URL>chrome://tabcloud/content/icon64.png</em:icon64URL>
-    <em:version>0.3</em:version>
+    <em:version>0.4</em:version>
     <em:creator>Connor Dunn</em:creator>
     <em:contributor></em:contributor>
     <em:description>Save and restore window sessions over time and across multiple computers.</em:description>

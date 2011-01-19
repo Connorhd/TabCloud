@@ -1,4 +1,5 @@
 Changelog:
+1.10   - Fix tabcloud height
 1.9:   - Added a better scrollbar to deal with larger lists of sessions
 1.8:   - Added close window button to currently open windows.
 1.7:   - Reorder saved sessions by dragging
