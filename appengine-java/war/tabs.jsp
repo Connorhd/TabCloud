@@ -9,11 +9,16 @@
 <%@ page import="uk.co.connorhd.tabcloud.PMF" %>
 <%@ page import="uk.co.connorhd.tabcloud.TCUser" %>
 
+<!DOCTYPE html>
 <html>
 	<head>
 		<link rel="icon" type="image/png" href="images/icon16.png">
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<link rel="apple-touch-icon-precomposed" href="/images/tabcloud57.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/tabcloud72.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/tabcloud114.png">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
 		<title>TabCloud</title>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		<style>
@@ -55,7 +60,7 @@
 	</head>
 	
 	<body>
-		<img style="float: left; padding: 0 50px;" src="images/tabcloud200.png" alt="TabCloud" />
+		<img style="float: left; padding: 0 50px;" src="images/tabcloud200.png" alt="TabCloud">
 		<div style="text-align: center; padding-bottom: 10px;">
 <%
     UserService userService = UserServiceFactory.getUserService();
