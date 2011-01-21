@@ -9,8 +9,7 @@ var tabcloud = {
 			var afterId = "urlbar-container";    // ID of element to insert after
 			var navBar  = document.getElementById("nav-bar");
 			var curSet  = navBar.currentSet.split(",");
-
-			if (curSet.indexOf(myId) == -1) {
+			if (curSet.indexOf(myId) == -1 && document.getElementById(myId) === null) {
 				var pos = curSet.indexOf(afterId) + 1 || curSet.length;
 				var set = curSet.slice(0, pos).concat(myId).concat(curSet.slice(pos));
 
@@ -137,6 +136,10 @@ var tabcloud = {
 											if (e.which === 13) {
 												try {
 													win.name = domWindowLegend.textContent = domWindowTitle.value;
+													
+													if (!win.name) {
+														domWindowLegend.textContent = win.name = 'Window';
+													}
 													
 													var req = new XMLHttpRequest();
 													req.open('POST', 'https://chrometabcloud.appspot.com/update', true);
@@ -324,6 +327,10 @@ var tabcloud = {
 							if (e.which === 13) {
 								try {
 									data.name = win._tabcloudName = domWindowLegend.textContent = domWindowTitle.value;
+									
+									if (!data.name) {
+										data.name = win._tabcloudName = domWindowLegend.textContent = 'Window';
+									}
 
 									delete domWindowLegend.editing;
 									delete tabcloud.editing;
