@@ -6,18 +6,18 @@
   <xul:toolbarpalette id="BrowserToolbarPalette">
 	<xul:toolbarbutton id="tabcloud-toolbar-button" class="toolbarbutton-1"
 		label="TabCloud" type="panel">
-			<xul:panel id="tabcloudpanel" style="width: 314px; background-color: rgba(0,0,0,0); border: 0; margin-left: -250px;" onpopuphidden="tabcloud.onHide()" onpopupshowing="tabcloud.onShow()">
+			<xul:panel id="tabcloud-panel" style="width: 314px; background-color: rgba(0,0,0,0); border: 0; margin-left: -250px;" onpopuphidden="tabcloud.onHide()" onpopupshowing="tabcloud.onShow()">
 <div style="-moz-border-radius: 5px; border: 1px solid #b2b2b2; background-color: white; margin: 5px; padding: 2px; -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);" >
-		<div id="scroll">
-		<div id="current">
+		<div id="tabcloud-scroll">
+		<div id="tabcloud-current">
 		</div>
-		<div id="saved"></div>
+		<div id="tabcloud-saved"></div>
 		</div>
-		<div class="info" style="font-size: 0.7em;">
-			<div id="tips" style="position: relative; height: 1em; " class="innerfade">
-				<span style="z-index: 4; position: absolute; display: block;">TabCloud FireFox Beta, <a onclick="gBrowser.selectedTab = gBrowser.addTab('http://chrometabcloud.appspot.com/'); document.getElementById('tabcloudpanel').hidePopup(); return false" href="" id="logoutlink">click to give feedback</a>.</span>
+		<div class="tabcloud-info" style="font-size: 0.7em;">
+			<div id="tabcloud-tips" style="position: relative; height: 1em; " class="innerfade">
+				<span style="z-index: 4; position: absolute; display: block;">TabCloud FireFox Beta, <a onclick="gBrowser.selectedTab = gBrowser.addTab('http://chrometabcloud.appspot.com/'); document.getElementById('tabcloud-panel').hidePopup(); return false" href="" id="tabcloud-logoutlink">click to give feedback</a>.</span>
 			</div>
-			<a onclick="gBrowser.selectedTab = gBrowser.addTab('https://chrometabcloud.appspot.com/logout'); document.getElementById('tabcloudpanel').hidePopup(); return false" href="" id="logoutlink">Logout</a>
+			<a onclick="gBrowser.selectedTab = gBrowser.addTab('https://chrometabcloud.appspot.com/logout'); document.getElementById('tabcloud-panel').hidePopup(); return false" href="" id="tabcloud-logoutlink">Logout</a>
 		</div>
 	</div>
 			</xul:panel>

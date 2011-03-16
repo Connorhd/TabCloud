@@ -2,32 +2,41 @@ var tabcloud = {
 	xhr: undefined,
 	editing: undefined,
 	onLoad: function() {
-		// initialization code
-		this.initialized = true;
-		try {
-			var myId    = "tabcloud-toolbar-button"; // ID of button to add
-			var afterId = "urlbar-container";    // ID of element to insert after
-			var navBar  = document.getElementById("nav-bar");
-			var curSet  = navBar.currentSet.split(",");
-			if (curSet.indexOf(myId) == -1 && document.getElementById(myId) === null) {
-				var pos = curSet.indexOf(afterId) + 1 || curSet.length;
-				var set = curSet.slice(0, pos).concat(myId).concat(curSet.slice(pos));
+		function firstRun(extensions) {
+			extension = extensions.get('tabcloud@firefox.connorhd.co.uk');
 
-				navBar.setAttribute("currentset", set.join(","));
-				navBar.currentSet = set.join(",");
-				document.persist(navBar.id, "currentset");
+			if (extension.firstRun) {
 				try {
-					BrowserToolboxCustomizeDone(true);
+					var myId    = "tabcloud-toolbar-button"; // ID of button to add
+					var afterId = "urlbar-container";    // ID of element to insert after
+					var navBar  = document.getElementById("nav-bar");
+					var curSet  = navBar.currentSet.split(",");
+					if (curSet.indexOf(myId) == -1 && document.getElementById(myId) === null) {
+						var pos = curSet.indexOf(afterId) + 1 || curSet.length;
+						var set = curSet.slice(0, pos).concat(myId).concat(curSet.slice(pos));
+
+						navBar.setAttribute("currentset", set.join(","));
+						navBar.currentSet = set.join(",");
+						document.persist(navBar.id, "currentset");
+						try {
+							BrowserToolboxCustomizeDone(true);
+						}
+						catch (e) {}
+					}
 				}
-				catch (e) {}
+				catch(e) {}
 			}
 		}
-		catch(e) {}
+
+		if (Application.extensions)
+			firstRun(extensions);
+		else
+			Application.getExtensions(firstRun);
 	},
   
 	hideSaved: function () {
-		while (document.getElementById('saved').hasChildNodes()) {
-			document.getElementById('saved').removeChild(document.getElementById('saved').lastChild);
+		while (document.getElementById('tabcloud-saved').hasChildNodes()) {
+			document.getElementById('tabcloud-saved').removeChild(document.getElementById('tabcloud-saved').lastChild);
 		}
 	},
 
@@ -35,15 +44,15 @@ var tabcloud = {
 		var xhtmlNS = 'http://www.w3.org/1999/xhtml';
 		this.hideSaved();
 		var domInfo = document.createElementNS(xhtmlNS, 'div');
-		domInfo.className = 'info';
+		domInfo.className = 'tabcloud-info';
 		domInfo.textContent = text;
-		document.getElementById('saved').appendChild(domInfo);
+		document.getElementById('tabcloud-saved').appendChild(domInfo);
 	},
 
 	onHide: function() {
 		this.hideSaved();
-		while (document.getElementById('current').hasChildNodes()) {
-			document.getElementById('current').removeChild(document.getElementById('current').lastChild);
+		while (document.getElementById('tabcloud-current').hasChildNodes()) {
+			document.getElementById('tabcloud-current').removeChild(document.getElementById('tabcloud-current').lastChild);
 		}
 		if (this.xhr) {
 			try {
@@ -68,7 +77,7 @@ var tabcloud = {
 						if (data.status == 'loggedout') {
 							tabcloud.hideSaved();
 							var domInfo = document.createElementNS(xhtmlNS, 'div');
-							domInfo.className = 'info';
+							domInfo.className = 'tabcloud-info';
 							domInfo.textContent = 'TabCloud requires you login to load your saved windows';
 							
 							var domInfoLink = document.createElementNS(xhtmlNS, 'a');
@@ -77,12 +86,12 @@ var tabcloud = {
 							domInfoLink.style.display = 'block';
 							domInfoLink.onclick = function () {
 								gBrowser.selectedTab = gBrowser.addTab('https://chrometabcloud.appspot.com/login');
-								document.getElementById('tabcloudpanel').hidePopup();
+								document.getElementById('tabcloud-panel').hidePopup();
 								return false;
 							}
 							domInfo.appendChild(domInfoLink);
 							
-							document.getElementById('saved').appendChild(domInfo);
+							document.getElementById('tabcloud-saved').appendChild(domInfo);
 						} else {
 							tabcloud.hideSaved();
 							var windowIdCounter = 0;
@@ -90,11 +99,11 @@ var tabcloud = {
 								var windowId = windowIdCounter++;
 								// Create window box
 								var domWindow = document.createElementNS(xhtmlNS, 'fieldset');
-								domWindow.className = 'window';
+								domWindow.className = 'tabcloud-window';
 								
 								// Create window box title
 								var domWindowLegend = document.createElementNS(xhtmlNS, 'legend');
-								domWindowLegend.className = 'windowname';
+								domWindowLegend.className = 'tabcloud-windowname';
 								// TODO: Window name helper + escape
 								domWindowLegend.textContent = win.name;
 								domWindow.appendChild(domWindowLegend);
@@ -158,7 +167,7 @@ var tabcloud = {
 
 								// Add buttons
 								var domWindowButtons = document.createElementNS(xhtmlNS, 'span');
-								domWindowButtons.className = 'right';
+								domWindowButtons.className = 'tabcloud-right';
 								domWindow.appendChild(domWindowButtons);
 								
 								// Delete button
@@ -212,7 +221,7 @@ var tabcloud = {
 								
 								// Tabs
 								var domTabs = document.createElementNS(xhtmlNS, 'div');
-								domTabs.className = 'tabs';
+								domTabs.className = 'tabcloud-tabs';
 								domWindow.appendChild(domTabs);
 								
 								win.tabs.forEach(function (tab) {
@@ -223,7 +232,7 @@ var tabcloud = {
 									else
 										domTab.src = 'chrome://tabcloud/content/images/page_white.png';
 										
-									domTab.className = 'tabimg';
+									domTab.className = 'tabcloud-tabimg';
 									domTab.onerror = function () {
 										domTab.src = 'chrome://tabcloud/content/images/page_white.png';
 									};
@@ -245,7 +254,7 @@ var tabcloud = {
 									domTabs.appendChild(domTabTooltip);
 								});
 
-								document.getElementById('saved').appendChild(domWindow);
+								document.getElementById('tabcloud-saved').appendChild(domWindow);
 							});
 						}
 					} catch (e) {
@@ -286,11 +295,11 @@ var tabcloud = {
 
 				// Create window box
 				var domWindow = document.createElementNS(xhtmlNS, 'fieldset');
-				domWindow.className = 'window';
+				domWindow.className = 'tabcloud-window';
 				
 				// Create window box title
 				var domWindowLegend = document.createElementNS(xhtmlNS, 'legend');
-				domWindowLegend.className = 'windowname';
+				domWindowLegend.className = 'tabcloud-windowname';
 				// TODO: Window name helper + escape
 				if (data.name)
 					domWindowLegend.textContent = data.name;
@@ -342,7 +351,7 @@ var tabcloud = {
 
 				// Add buttons
 				var domWindowButtons = document.createElementNS(xhtmlNS, 'span');
-				domWindowButtons.className = 'right';
+				domWindowButtons.className = 'tabcloud-right';
 				domWindow.appendChild(domWindowButtons);
 				
 				// Open button
@@ -382,7 +391,7 @@ var tabcloud = {
 				
 				// Tabs
 				var domTabs = document.createElementNS(xhtmlNS, 'div');
-				domTabs.className = 'tabs';
+				domTabs.className = 'tabcloud-tabs';
 				domWindow.appendChild(domTabs);
 				
 				data.tabs = [];
@@ -403,7 +412,7 @@ var tabcloud = {
 							favicon: (fis.getFaviconImageForPage(uri).spec != '' && fis.getFaviconImageForPage(uri).spec !== undefined) ? fis.getFaviconImageForPage(uri).spec.substring(17) : ''
 						});
 
-						domTab.className = 'tabimg';
+						domTab.className = 'tabcloud-tabimg';
 						domTab.onerror = function () {
 							domTab.src = 'chrome://tabcloud/content/images/page_white.png';
 						};
@@ -427,7 +436,7 @@ var tabcloud = {
 					} catch(e) {}
 				}
 				
-				document.getElementById('current').appendChild(domWindow);
+				document.getElementById('tabcloud-current').appendChild(domWindow);
 			})()
 		}
 		tabcloud.loadRemote();

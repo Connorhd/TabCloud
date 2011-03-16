@@ -13,66 +13,63 @@
 	-moz-box-orient: horizontal;
 }
 
-#tabcloudpanel #scroll {
+#tabcloud-panel #tabcloud-scroll {
 	max-height: 500px;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
-#tabcloudpanel * {
+#tabcloud-panel * {
 	margin: 0;
 	padding: 0;
 }
-#tabcloudpanel {
+#tabcloud-panel {
 	font-family: sans-serif;
 	font-size: 1.2em;
 }
-#tabcloudpanel .window {
+#tabcloud-panel .tabcloud-window {
 	border: 1px solid #ccc;
 	-moz-border-radius: 5px;
 	margin: 5px;
 	padding: 5px;
 }
-#tabcloudpanel .window legend {
+#tabcloud-panel .tabcloud-window legend {
 	padding: 0 2px;
 	background-color: white;
 }
-#tabcloudpanel .tabs img {
+#tabcloud-panel .tabcloud-tabs img {
 	margin: 2px;
 	width: 16px;
 	height: 16px;
 }
-#tabcloudpanel .tabs deck {
+#tabcloud-panel .tabcloud-tabs deck {
 	width: 20px;
 	height: 20px;
 }
-#tabcloudpanel #current {
+#tabcloud-panel #tabcloud-current {
 	border-bottom: 1px solid black;
 }
-#tabcloudpanel .info {
+#tabcloud-panel .tabcloud-info {
 	border: 1px solid #ccc;
 	-moz-border-radius: 5px;
 	margin: 5px;
 	text-align: center;
 	padding: 10px;
 }
-#tabcloudpanel .right {
+#tabcloud-panel .tabcloud-right {
 	float: right;
 	margin-top: -22px;
 	background-color: white;
 	padding: 2px;
 	cursor: pointer;
 }
-#tabcloudpanel .decryptpass {
-	width: 150px !important;
-}
 
-#tabcloudpanel #tips span {
+#tabcloud-panel #tabcloud-tips span {
 	width: 100%;
 }
-#tabcloudpanel #tips {
+#tabcloud-panel #tabcloud-tips {
 	margin-bottom: 3px;
 }
-#tabcloudpanel a {
+#tabcloud-panel a {
 	text-decoration: underline;
 	color: #0000ee;
 }
