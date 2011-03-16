@@ -434,4 +434,4 @@ var tabcloud = {
   }
 };
 
-window.addEventListener("load", tabcloud.onLoad, false);
+window.addEventListener("load", function () { tabcloud.onLoad() }, false);
