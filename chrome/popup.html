@@ -6,14 +6,14 @@
 		<script src="./lib/jquery.innerfade.js"></script>
 		<script src="./lib/jquery.tinyscrollbar.min.js"></script>
 		<script>
-			$(function () {
+			$(function () {setTimeout(function () {
 				// Protect against XSRF attacks
 				jQuery.ajaxSetup({
 					'beforeSend': function(xhr) {
 						xhr.setRequestHeader('X-XSRF-Protection', 'true');
 					}
 				})
-			
+				
 				var getWindowName = function (name) {
 					var names = JSON.parse(localStorage.tempWindowNames)
 					return names[name];
@@ -323,7 +323,7 @@
 				
 				var TCWindows = [];
 
-				var updateTabs = function () {
+				var updateTabs = function (triedAutoLogin) {
 					setInfo('Loading...');
 					$.get('https://chrometabcloud.appspot.com/tabcloud', function (data) {
 						if (data.status !== undefined) {
@@ -350,7 +350,14 @@
 									updateScroll();
 								}
 							} else {
-								setInfo('TabCloud requires you login to load your saved windows<br /><a target="_blank" href="https://chrometabcloud.appspot.com/login">Click here to login</a>');
+								if (triedAutoLogin === true) {
+									setInfo('TabCloud requires you login to load your saved windows<br /><a target="_blank" href="https://chrometabcloud.appspot.com/login">Click here to login</a>');
+								} else {
+									setInfo('Attempting automatic login...<iframe style="height: 1px; width: 1px; opacity: 0; position: absolute" src="https://chrometabcloud.appspot.com/login"></iframe>');
+									setTimeout(function () {
+										updateTabs(true);
+									}, 1000);
+								}
 							}
 						} else {
 							setInfo('Server error, try again later.');
@@ -391,7 +398,10 @@
 					scroll.update();
 				}
 				updateScroll();
-			});
+				
+				// Show body (hidden to make loading less horrible)
+				$('body').css('visibility','visible');
+			},0)});
 		</script>
 		<style>
 			* {
@@ -487,7 +497,7 @@
 			#scrollbar .disable { display: none; }
 		</style>
 	</head>
-	<body>
+	<body style="visibility: hidden">
 		<div id="scrollbar">
 			<div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
 			<div class="viewport">
