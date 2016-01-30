@@ -1,7 +1,8 @@
 {
 	"name": "TabCloud",
-	"version": "1.11",
-	
+	"version": "2.0",
+	"manifest_version":2,
+
 	"icons": {
 		"16": "images/icon16.png",
         "48": "images/icon48.png",
@@ -15,7 +16,11 @@
 		"https://chrometabcloud.appspot.com/*"
 	],
 	
-	"background_page": "background.html",
+	"background": {
+		"scripts": ["./lib/background.js"]
+	},
+
+//	"background_page": "background.html",
 	
 	"options_page": "options.html",
 	

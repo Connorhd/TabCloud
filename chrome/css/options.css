@@ -1,0 +1,62 @@
+body {
+		margin: 10px;
+		min-width: 47em;
+	}
+
+a {
+		color: blue;
+		font-size: 103%;
+	}
+
+#header {
+		margin-bottom: 1.05em;
+		overflow: hidden;
+		padding-bottom: 1.5em;
+		padding-left: 0;
+		padding-top: 1.5em;
+		position: relative;
+	}
+
+#header h1 {
+		background: url("../images/icon65.png") 0px 20px no-repeat;
+		display: inline;
+		margin: 0;
+		padding-bottom: 43px;
+		padding-left: 75px;
+		padding-top: 40px;
+	}
+
+h1 {
+		font-size: 156%;
+		font-weight: bold;
+		padding: 0;
+		margin: 0;
+	}
+
+.section-header {
+		background: #ebeff9;
+		border-top: 1px solid #b5c7de;
+		font-size: 99%;
+		padding-bottom: 2px;
+		padding-left: 5px;
+		padding-top: 3px;
+		width: 100%;
+		margin-top: 10px;
+	}
+	
+.box {
+		border-bottom: 1px solid #ccc;
+		padding: 10px;
+	}
+	
+.optioninput {
+		float: right;
+		width: 30%
+		text-align: right;
+		font-weight: bold;
+	}
+	
+.optiontext {
+		float: left;
+		width: 70%;
+	}

@@ -1,83 +1,11 @@
+<!doctype html>
 <html>
 	<head>
-		<script src="./lib/jquery-1.4.2.min.js"></script>
 		<meta charset="utf-8">
 		<title>TabCloud Options</title>
-		<style>
-			body {
-				margin: 10px;
-				min-width: 47em;
-			}
-
-			a {
-				color: blue;
-				font-size: 103%;
-			}
-
-			#header {
-				margin-bottom: 1.05em;
-				overflow: hidden;
-				padding-bottom: 1.5em;
-				padding-left: 0;
-				padding-top: 1.5em;
-				position: relative;
-			}
-
-			#header h1 {
-				background: url("images/icon65.png") 0px 20px no-repeat;
-				display: inline;
-				margin: 0;
-				padding-bottom: 43px;
-				padding-left: 75px;
-				padding-top: 40px;
-			}
-
-			h1 {
-				font-size: 156%;
-				font-weight: bold;
-				padding: 0;
-				margin: 0;
-			}
-
-			.section-header {
-				background: #ebeff9;
-				border-top: 1px solid #b5c7de;
-				font-size: 99%;
-				padding-bottom: 2px;
-				padding-left: 5px;
-				padding-top: 3px;
-				width: 100%;
-				margin-top: 10px;
-			}
-			
-			.box {
-				border-bottom: 1px solid #ccc;
-				padding: 10px;
-			}
-			
-			.optioninput {
-				float: right;
-				width: 30%
-				text-align: right;
-				font-weight: bold;
-			}
-			
-			.optiontext {
-				float: left;
-				width: 70%;
-			}
-		</style>
-		<script>
-			$(function () {
-				$('input[name="openin"][value="'+localStorage.openin+'"]').attr('checked','checked');
-				$('input[name="deleteconfirm"][value="'+localStorage.deleteconfirm+'"]').attr('checked','checked');
-				$('input[name="encryption"][value="'+localStorage.encryption+'"]').attr('checked','checked');
-				
-				$('input[type="radio"]').change(function (e) {
-					localStorage[$(this).attr('name')] = $(this).attr('value')
-				});
-			});
-		</script>
+		<script src="./lib/jquery-2.2.min.js"></script>
+		<script src="./lib/options.js"></script>
+		<link rel="stylesheet" type="text/css" href="./css/options.css" />		
 	</head>
 <body style="font-family: Arial; font-size: 84%;">
     <div id="header"><h1>TabCloud</h1></div>
@@ -124,22 +52,4 @@
 			</ul>
 		</p>
 	</div>
-<!--
-	<div class="section-header">
-		<strong>Security / Encryption</strong>
-	</div>
-
-	<div class="box">
-		All data sent too and from the TabCloud server is encrypted using TLS (https) security, however in certain cases you may which to password protect individual windows. If you enable the encryption option there will be two save window buttons on the TabCloud menu, one of which will prompt you for a password. This password will be required any time you wish to restore the saved window.
-	</div>
-	<div class="box">
-		<div class="optiontext">
-			Enable encryption
-		</div>
-		<div class="optioninput">
-			<label><input type="radio" name="encryption" value="yes" /> Yes</label> <label><input type="radio" name="encryption" value="no" /> No</label>
-		</div>
-		<div style="clear: both"></div>
-	</div>
--->
   </body></html>
